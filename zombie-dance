@@ -12,7 +12,6 @@ import pygame
 import sys,getopt
 import random
 
-import Tools
 from Zombies import *
 from Players import *
 
