@@ -39,11 +39,11 @@ def main():
       Tools.show_help()
       sys.exit(0)    
     elif opt in ("-l","--level"):
-      level=int(arg)
-      if level < 1:
-         level = 1
-      elif level > 10:
-         level = 10
+      LEVEL=int(arg)
+      if LEVEL < 1:
+         LEVEL = 1
+      elif LEVEL > 10:
+         LEVEL = 10
 
 
   log=open("/tmp/zombie-dance.log","w")
@@ -67,6 +67,8 @@ def main():
     dead=False
     player.kills=0
     player.lives=5
+
+    level=LEVEL
 
 # MAIN ONE ROUND LOOP
 
@@ -105,7 +107,7 @@ def main():
            break
            
 # Creating new zombies 
-     if random.randint(1,2+(10-level))==1:
+     if random.randint(1,1+(10-level))==1:
        where=random.choice((0,1,2,3,5,6,7,8))
        if cellmap[where] == 0:
          cellmap[where] = 1

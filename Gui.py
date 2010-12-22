@@ -50,7 +50,6 @@ class Gui:
 
 # JOYSTICK (DANCE MAT) INITIALIZATION
     if pygame.joystick.get_count() > 0:        
-       print "Joystick OK!", pygame.joystick.get_count();
        self.js=pygame.joystick.Joystick(JOYSTICK)
        self.js.init()
        print "Using joystick:",self.js.get_name()," with",self.js.get_numbuttons()," buttons and ",self.js.get_numaxes()," axes."       
@@ -63,9 +62,9 @@ class Gui:
 # 6  7  8
 
 # Map por DanceMat
-#    self.keymap=(3,7,1,5,6,8,0,2)
+    self.keymap=(3,7,1,5,6,8,0,2)
 # Map for joystick testing
-    self.keymap=(7,5,3,1,0,2,6,8)
+#    self.keymap=(7,5,3,1,0,2,6,8)
 
 # SHOW INTRO
   def show_intro(self):
@@ -142,7 +141,6 @@ class Gui:
     for key in range(0,8):    
       if self.js.get_button(key):
         p.cell=self.keymap[key]
-        print "Button pressed", key, p.cell
   
     p.move()
   
