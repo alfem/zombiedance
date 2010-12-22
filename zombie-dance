@@ -1,0 +1,126 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
+# zombie-dance
+# Step on zombies before they eat you!
+# A game for dance mats
+# Author: Alfonso E.M. <alfonso@el-magnifico.org>
+# License: Free (GPL3) 
+# Version: 1.0 - 1/Dec/2010
+
+import pygame
+import sys,getopt
+import random
+
+import Tools
+from Zombies import *
+from Players import *
+
+import Gui
+
+ 
+# MAIN INITIALIZATION
+
+def main():
+
+  WIDTH=1024
+  HEIGHT=768
+  players=1
+  level=1
+  
+
+  try:
+    opts, args = getopt.getopt(sys.argv[1:],"hlp",["help","level="])
+  except getopt.GetoptError:
+    Tools.show_help()
+    sys.exit(2)
+
+  for opt, arg in opts:
+    if opt in ("-h", "--help"):
+      Tools.show_help()
+      sys.exit(0)    
+    elif opt in ("-l","--level"):
+      level=int(arg)
+      if level < 1:
+         level = 1
+      elif level > 10:
+         level = 10
+
+
+  log=open("/tmp/zombie-dance.log","w")
+
+
+  gui=Gui.Gui(WIDTH,HEIGHT)
+
+  player=Player()
+  
+  cellmap=[0,0,0,0,0,0,0,0,0]
+
+# MAIN GENERAL GAME LOOP 
+  while 1:
+    gui.show_intro()
+
+    gui.show_ground()
+
+    gui.show_score(player)
+
+    zombies=[]
+    dead=False
+    player.kills=0
+    player.lives=5
+
+# MAIN ONE ROUND LOOP
+
+    while not dead: 
+
+# Moving player
+     for n in range(10):
+       pygame.time.delay(10- (level/5) )
+       gui.move_player(player)
+       for z in zombies:
+# If a zombie is not fully outside you can step on (and kill) it
+         if z.cell == player.cell:
+             player.kills+=1
+             gui.zombie_killed(z)
+             zombies.remove(z)
+             cellmap[z.cell] = 0
+             gui.show_score(player)
+             if player.kills % 5 == 0 and level < 10:
+               level+=1
+             log.write("Zombie killed %i\n" % (z.cell))
+
+# Moving zombies up
+     for z in zombies:
+       z.move()
+       if z.depth < 4:
+         gui.show_zombie(z)
+       else:      
+         gui.zombie_bites(z)
+         zombies.remove(z)
+         cellmap[z.cell] = 0
+         player.lives-=1
+         gui.show_score(player)
+         log.write("Zombie bites in %i, you in %i\n" % (z.cell,player.cell))
+         if player.lives == 0:
+           dead=True
+           break
+           
+# Creating new zombies 
+     if random.randint(1,2+(10-level))==1:
+       where=random.choice((0,1,2,3,5,6,7,8))
+       if cellmap[where] == 0:
+         cellmap[where] = 1
+         zombies.append(Zombie(where))  
+
+         log.write("New zombie in %i\n" % (where))
+ 
+     pygame.time.delay(200)
+     
+
+# End of the Game
+    gui.show_end(player)    
+
+
+
+if __name__ == '__main__': main()
+
