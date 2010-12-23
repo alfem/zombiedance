@@ -20,8 +20,8 @@ class Gui:
     pygame.key.set_repeat(10,10)
 
 
-#    self.screen=pygame.display.set_mode(resolution,pygame.FULLSCREEN)
-    self.screen=pygame.display.set_mode(resolution)
+    self.screen=pygame.display.set_mode(resolution,pygame.FULLSCREEN)
+#    self.screen=pygame.display.set_mode(resolution)
   
     self.snd_intro=Tools.load_sound("intro.wav")
     self.snd_hit=Tools.load_sound("hit.wav")
