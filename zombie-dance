@@ -25,7 +25,7 @@ def main():
   WIDTH=1024
   HEIGHT=768
   players=1
-  level=1
+  LEVEL=1
   
 
   try:
